@@ -1,0 +1,10 @@
+strict digraph G {
+  "sockshop.orders" [ label=<<table bgcolor='#87cefa' border='1' cellborder='0'><tr><td><i>&laquo;Functional Service&raquo;</i></td></tr><tr><td> <b>orders</b></td></tr><tr><td>service technology {Java}</td></tr></table>> type="FUNCTIONAL" shape="plaintext" color="black" fontname="Helvetica" ];
+  "sockshop.catalogue" [ label=<<table bgcolor='#87cefa' border='1' cellborder='0'><tr><td><i>&laquo;Functional Service&raquo;</i></td></tr><tr><td> <b>catalogue</b></td></tr><tr><td>service technology {Go}</td></tr></table>> type="FUNCTIONAL" shape="plaintext" color="black" fontname="Helvetica" ];
+  "sockshop.shipping" [ label=<<table bgcolor='#87cefa' border='1' cellborder='0'><tr><td><i>&laquo;Functional Service&raquo;</i></td></tr><tr><td> <b>shipping</b></td></tr><tr><td>service technology {Java}</td></tr></table>> type="FUNCTIONAL" shape="plaintext" color="black" fontname="Helvetica" ];
+  "sockshop.carts" [ label=<<table bgcolor='#87cefa' border='1' cellborder='0'><tr><td><i>&laquo;Functional Service&raquo;</i></td></tr><tr><td> <b>carts</b></td></tr><tr><td>service technology {Java}</td></tr></table>> type="FUNCTIONAL" shape="plaintext" color="black" fontname="Helvetica" ];
+  "sockshop.user" [ label=<<table bgcolor='#87cefa' border='1' cellborder='0'><tr><td><i>&laquo;Functional Service&raquo;</i></td></tr><tr><td> <b>user</b></td></tr><tr><td>service technology {Go}</td></tr></table>> type="FUNCTIONAL" shape="plaintext" color="black" fontname="Helvetica" ];
+  "sockshop.queue-master" [ label=<<table bgcolor='#c1005d' border='1' cellborder='0'><tr><td><i>&laquo;Infrastructure Service&raquo;</i></td></tr><tr><td> <b>queue-master</b></td></tr><tr><td>service technology {Java}</td></tr></table>> type="INFRASTRUCTURE" shape="plaintext" color="black" fontname="Helvetica" ];
+  "sockshop.queue-master" -> "sockshop.shipping" [ label="simulates" fontname="Helvetica" ];
+  "sockshop.shipping" -> "sockshop.orders" [ label="requires" fontname="Helvetica" ];
+}
