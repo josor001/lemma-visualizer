@@ -70,7 +70,7 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Jar> {
     manifest {
-        attributes("Main-Class" to "de.fhdo.lemma.visualizer.Visualizer")
+        attributes("Main-Class" to "de.fhdo.lemma.model_processing.visualizer.Visualizer")
     }
 }
 
@@ -85,7 +85,7 @@ val standalone = task("standalone", type = Jar::class) {
     with(tasks["jar"] as CopySpec)
 
     manifest {
-        attributes("Main-Class" to "de.fhdo.lemma.visualizer.VisualizerKt")
+        attributes("Main-Class" to "de.fhdo.lemma.model_processing.visualizer.VisualizerKt")
 
         // Prevent security exception from JAR verifier
         exclude("META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.SF")
