@@ -22,7 +22,10 @@ buildscript {
     extra.set("picocliVersion", "3.9.3")
     extra.set("xtextVersion", "2.21.0")
     extra.set("graphvizVersion", "0.18.1")
-    extra.set("slf4jVersion", "1.7.29")
+    //extra.set("slf4jVersion", "2.0.5")
+    extra.set("kotlinLogging","1.12.5")
+    extra.set("coroutineCore","1.4.3")
+    extra.set("log4jVersion", "2.16.0")
 }
 
 dependencies {
@@ -35,20 +38,33 @@ dependencies {
     val picocliVersion: String by rootProject.extra
     val xtextVersion: String by rootProject.extra
     val graphvizVersion: String by rootProject.extra
-    val slf4jVersion: String by rootProject.extra
+    //val slf4jVersion: String by rootProject.extra
+    val log4jVersion: String by rootProject.extra
+    val kotlinLogging: String by rootProject.extra
+    val coroutineCore: String by rootProject.extra
 
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    implementation("org.slf4j:slf4j-simple:$slf4jVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+
+    //implementation("org.slf4j:slf4j-simple:$slf4jVersion")
+    implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
+    implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
+    implementation("org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineCore")
+    implementation ("io.github.microutils:kotlin-logging:$kotlinLogging")
+
     implementation("de.fhdo.lemma.data.datadsl:de.fhdo.lemma.data.datadsl:$lemmaEclipsePluginsVersion")
     implementation("de.fhdo.lemma.intermediate:de.fhdo.lemma.data.intermediate.metamodel:$lemmaEclipsePluginsVersion")
+
     implementation("de.fhdo.lemma.intermediate:de.fhdo.lemma.service.intermediate.metamodel:" +
             lemmaEclipsePluginsVersion)
+
     implementation("de.fhdo.lemma.live_validation:de.fhdo.lemma.live_validation:$lemmaEclipsePluginsVersion")
     implementation("de.fhdo.lemma.model_processing:de.fhdo.lemma.model_processing:$modelProcessingVersion")
     implementation("de.fhdo.lemma.model_processing.utils:de.fhdo.lemma.model_processing.utils:$modelProcessingVersion")
     implementation("de.fhdo.lemma.servicedsl:de.fhdo.lemma.servicedsl:$lemmaEclipsePluginsVersion")
+
     implementation("info.picocli:picocli:$picocliVersion")
     implementation("io.github.classgraph:classgraph:$classgraphVersion")
     implementation("org.jgrapht:jgrapht-core:$jgraphtVersion")
@@ -86,7 +102,8 @@ val standalone = task("standalone", type = Jar::class) {
 
     manifest {
         attributes("Main-Class" to "de.fhdo.lemma.model_processing.visualizer.VisualizerKt")
-
+        // Prevent "WARNING: sun.reflect.Reflection.getCallerClass is not supported" from log4j
+        "Multi-Release" to "true"
         // Prevent security exception from JAR verifier
         exclude("META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.SF")
     }

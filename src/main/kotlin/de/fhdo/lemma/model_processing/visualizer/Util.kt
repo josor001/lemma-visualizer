@@ -1,4 +1,4 @@
-package de.fhdo.lemma.visualizer
+package de.fhdo.lemma.model_processing.visualizer
 
 import de.fhdo.lemma.model_processing.asFile
 import de.fhdo.lemma.service.intermediate.IntermediateMicroservice

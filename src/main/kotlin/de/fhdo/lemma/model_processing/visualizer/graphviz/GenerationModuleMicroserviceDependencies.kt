@@ -4,7 +4,7 @@ import de.fhdo.lemma.data.intermediate.IntermediateImport
 import de.fhdo.lemma.model_processing.annotations.CodeGenerationModule
 import de.fhdo.lemma.model_processing.asXmiResource
 import de.fhdo.lemma.model_processing.builtin_phases.code_generation.AbstractCodeGenerationModule
-import de.fhdo.lemma.visualizer.fullyQualifiedName
+import de.fhdo.lemma.model_processing.visualizer.fullyQualifiedName
 import de.fhdo.lemma.model_processing.visualizer.graphviz.commandline.ModuleCommandLine
 import de.fhdo.lemma.model_processing.visualizer.graphviz.commandline.ModuleCommandLine.intermediatePath
 import de.fhdo.lemma.model_processing.visualizer.graphviz.exceptions.ModuleException
@@ -70,10 +70,9 @@ class GenerationModuleMicroserviceNames : AbstractCodeGenerationModule() {
             //PRODUCTION MODE, example graph is skipped
             //Initial parsing run where the intermediateModelResource from the code generation phase
             //is added to the graph
-            val initialModel: IntermediateServiceModel = (resource.contents[0] as IntermediateServiceModel)!!
+            val initialModel: IntermediateServiceModel = (resource.contents[0] as IntermediateServiceModel)
 
             println("InitialModel "+initialModel.sourceModelUri)
-            val absoluteIntermediateModelFilePath = intermediatePath!!.toFile().canonicalPath
 
             // Populates the Microservice Graph with values from initialModel
             println("Populating graph with initial model...")
@@ -133,7 +132,7 @@ class GenerationModuleMicroserviceNames : AbstractCodeGenerationModule() {
     private fun populateMicroserviceGraph(modelRoot : IntermediateServiceModel) {
         if (!processedServiceModels.contains(URLEncoder.encode(modelRoot.sourceModelUri, "utf-8"))) {
             // mark as already processed
-            processedServiceModels.add(URI(URLEncoder.encode(modelRoot.sourceModelUri, "utf-8")))
+            processedServiceModels.add(URI(URLEncoder.encode(modelRoot.sourceModelUri, "utf-8") ))
             //traverse services of model file
             modelRoot.microservices.forEach {
                 visitMicroserviceVertex(it)
@@ -201,7 +200,6 @@ class GenerationModuleMicroserviceNames : AbstractCodeGenerationModule() {
                 // checking for not yet added interfaces; set used to improve performance
                 val vertexInterfaceNames = existingVertex.interfaces.map { vertexInterface -> vertexInterface.name }.toSet()
                 val serviceInterfaceNames = service.interfaces.map { intermediateInterface -> intermediateInterface.name }.toSet()
-                val serviceRequiredNames = service.requiredMicroservices.map { servRef -> servRef.fullyQualifiedName() }
 
                 // identify possible new interfaces
                 serviceInterfaceNames.minus(vertexInterfaceNames).forEach {
@@ -235,9 +233,9 @@ class GenerationModuleMicroserviceNames : AbstractCodeGenerationModule() {
 
     private fun buildInterfaceVertex(it: IntermediateInterface): InterfaceSubVertex {
         val subVertex = InterfaceSubVertex(it.name, it.visibility)
-        it.operations.forEach {
-            val op = OperationSubVertex(it.name, it.visibility)
-            it.parameters.forEach {
+        it.operations.forEach { intermediateOperation ->
+            val op = OperationSubVertex(intermediateOperation.name, intermediateOperation.visibility)
+            intermediateOperation.parameters.forEach {
                 val param = ParameterSubVertex(it.communicationType, it.name, it.type.name)
                 op.parameters.add(param)
             }
@@ -278,17 +276,25 @@ class GenerationModuleMicroserviceNames : AbstractCodeGenerationModule() {
     // it would also be possible to use JGraphX for visualization. Might be worth checking?
     private fun createImageRepresentation(imageConfig: ImageConfig, path: File, details : DetailLevel?) {
         if (imageConfig.height == null && imageConfig.width == null)
-            Graphviz.fromString(createDotRepresentation(details))
-                .render(imageConfig.format).toFile(path)
+            imageConfig.format?.let {
+                Graphviz.fromString(createDotRepresentation(details))
+                    .render(it).toFile(path)
+            }
         if (imageConfig.height != null && imageConfig.width != null)
-            Graphviz.fromString(createDotRepresentation(details))
-                .height(imageConfig.height).width(imageConfig.width).render(imageConfig.format).toFile(path)
+            imageConfig.format?.let {
+                Graphviz.fromString(createDotRepresentation(details))
+                    .height(imageConfig.height).width(imageConfig.width).render(it).toFile(path)
+            }
         if (imageConfig.height != null && imageConfig.width == null)
-            Graphviz.fromString(createDotRepresentation(details)).height(imageConfig.height)
-                .render(imageConfig.format).toFile(path)
+            imageConfig.format?.let {
+                Graphviz.fromString(createDotRepresentation(details)).height(imageConfig.height)
+                    .render(it).toFile(path)
+            }
         if (imageConfig.height == null && imageConfig.width != null)
-            Graphviz.fromString(createDotRepresentation(details)).width(imageConfig.width)
-                .render(imageConfig.format).toFile(path)
+            imageConfig.format?.let {
+                Graphviz.fromString(createDotRepresentation(details)).width(imageConfig.width)
+                    .render(it).toFile(path)
+            }
     }
 }
 
