@@ -14,5 +14,9 @@ bin/
 *.iws
 *.ipr
 
+# Mac stuff
+.DS_Store
+**/.DS_Store
+
 # Specific output folders
 exampleOutput
