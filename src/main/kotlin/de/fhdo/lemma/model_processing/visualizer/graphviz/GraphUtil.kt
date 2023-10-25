@@ -36,20 +36,16 @@ class GraphUtil {
             //Lambda for decorating the vertices with attributes
             val vertexAttributeProvider : (MicroserviceVertex) -> MutableMap<String, Attribute> = {
                 val attributes = mutableMapOf<String, Attribute>()
-                attributes.put(
-                    "label", DefaultAttribute((
-                        htmlLabel(it)
-                        ),
-                    AttributeType.HTML))
-                attributes.put("type", DefaultAttribute.createAttribute(it.type))
-                attributes.put("shape", DefaultAttribute.createAttribute("plaintext"))
+                attributes["label"] = DefaultAttribute(htmlLabel(it), AttributeType.HTML)
+                attributes["type"] = DefaultAttribute.createAttribute(it.type)
+                attributes["shape"] = DefaultAttribute.createAttribute("plaintext")
                 val color = when(it.type) {
                     "FUNCTIONAL" -> "black"
                     "INFRASTRUCTURE" -> "black"
                     "UTILITY" -> "black"
                     else -> "red"
                 }
-                attributes.put("color", DefaultAttribute.createAttribute(color))
+                attributes["color"] = DefaultAttribute.createAttribute(color)
                 //attributes.put("fontsize", DefaultAttribute.createAttribute(12))
                 attributes["fontname"] = DefaultAttribute.createAttribute(FONT)
                 //last part of a lambda is always considered its return value
