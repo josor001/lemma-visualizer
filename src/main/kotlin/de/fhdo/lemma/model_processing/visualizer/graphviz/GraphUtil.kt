@@ -82,11 +82,12 @@ class GraphUtil {
                 "UTILITY" -> "#80c100"
                 else -> "#d3d3d3"
             }
-            //HTML template to display the Service vertices
+            //HTML template to display the service vertices
             return "<table bgcolor='${bgcolor}' border='1' cellborder='0'>" +
                     "<tr><td><i>&laquo;${it.type.toString().toLowerCase().capitalize()} Service&raquo;</i></td></tr>" +
                     "<tr><td>${it.visibility.visibilityHtml()} <b>${it.qualifiedName.substring(it.qualifiedName.lastIndexOf('.') + 1)}</b></td></tr>" +
-                    "${if (it.technology != null) "<tr><td>service technology {${it.technology}}</td></tr>" else ""}" +
+                    (if (it.technology != null) "<tr><td>service technologies</td></tr>" else "") +
+                    (if (it.technology != null) "<tr><td>{${it.technology}}</td></tr>" else "") +
                     (if (details.ordinal >= DetailLevel.INTERFACES.ordinal) it.interfacesHtml() else "") +
             "</table>"
         }

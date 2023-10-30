@@ -173,8 +173,11 @@ class GenerationModuleMicroserviceNames : AbstractCodeGenerationModule() {
     private fun visitMicroserviceVertex(service: IntermediateMicroservice): MicroserviceVertex? {
         //if the service has not been added as a vertex
         if (!visitedMicroservices.contains(service.qualifiedName)) {
+            val serviceTechnologiesList = service.technologies.map { technology -> technology.name }
+            val technologyString = if(serviceTechnologiesList.isNotEmpty())
+                 serviceTechnologiesList.joinToString(separator = ",") else ""
             val newVertex =
-                MicroserviceVertex(service.visibility, service.name, service.fullyQualifiedName(), service.type)
+                MicroserviceVertex(service.visibility, service.name, service.fullyQualifiedName(), service.type, technologyString)
             visitedMicroservices[service.fullyQualifiedName()] = newVertex
             // remember edges which need to be drawn later
             service.requiredMicroservices.forEach {
